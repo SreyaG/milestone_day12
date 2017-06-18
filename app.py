@@ -14,7 +14,7 @@ def plot_close(tickr):
     y=mydata['Close']
     output_notebook()
     p = Line(y, title="Closing Price/ Day in May",width=500, height=400,xlabel='Dates', ylabel='Closing Price')
-    output_file("templates\closing.html", title="Closing Price in May")
+    output_file("templates/closing.html", title="Closing Price in May")
     show(p)
 
 app = Flask(__name__)
