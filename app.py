@@ -3,7 +3,7 @@ import quandl as qd
 import pandas as pd
 import numpy as np
 from bokeh.charts import Line,output_file, show
-from bokeh.io import output_notebook
+from bokeh.embed import components
 import scipy
 
 def plot_close(tickr):
@@ -12,10 +12,10 @@ def plot_close(tickr):
     mydata=qd.get(tickrfinal,start_date="2017-5-1", end_date="2017-5-31")
     print list(mydata)
     y=mydata['Close']
-    output_notebook()
+    #output_notebook()
     p = Line(y, title="Closing Price/ Day in May",width=500, height=400,xlabel='Dates', ylabel='Closing Price')
-    output_file("templates/closing.html", title="Closing Price in May")
-    show(p)
+    #output_file("templates\closing.html", title="Closing Price in May")
+    return p
 
 app = Flask(__name__)
 
@@ -33,10 +33,11 @@ def index():
         #f.write('Ticker: %s\n'%(app.var['name']))
         #f.close()
         tickr=request.form['ticker']
-        plot_close(tickr)
-        return render_template('closing.html')
+        p=plot_close(tickr)
+        script, div = components (p)
+        return render_template("index1.html", script=script, div=div,Ticker=tickr)
 
 
 if __name__ == '__main__':
-  port = int(os.environ.get("PORT", 5000))
-  app.run(host='0.0.0.0', port=port)
+  #app.run(port=33507)
+  app.run()
